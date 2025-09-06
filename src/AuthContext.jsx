@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     setUser(token ? verify(token) : null);
   }, [token]);
-
+  console.log("User", user)
   function loginAs(role) {
     const t = sign({ role, name: role === "admin" ? "Admin" : "User" });
     localStorage.setItem("mf_token", t);

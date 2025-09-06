@@ -27,18 +27,36 @@ function Header() {
 }
 
 function AppContent() {
-  const { token } = useContext(AuthContext);
+  const { token, user, loginAs, logout } = useContext(AuthContext);
+
+  if(!token) {
+    return(
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="p-8 border rounded shadow-lg text-center">
+          <h2 className="text-2xl font-bold mb-4">Login to Music library</h2>
+          <div className="space-x-4">
+            <button
+              className="px-4 py-2 border rounded bg-blue-500 text-white cursor-pointer"
+              onClick={() => loginAs("user")}
+            >
+              Login as User
+            </button>
+            <button
+              className="px-4 py-2 border rounded bg-green-500 text-white cursor-pointer"
+              onClick={() => loginAs("admin")}
+            >
+              Login as Admin
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
   
   return (
-    <div className="min-h-screen">
-      HELLO
-      <Header />
-      <main className="max-w-5xl mx-auto p-4">
-        <Suspense fallback={<div>Loading remote music library...</div>}>
-          <MusicLibrary token={token} />
-        </Suspense>
-      </main>
-    </div>
+    <Suspense fallback={<div>Loading music library...</div>}>
+      <MusicLibrary token={token} logout={logout} />
+    </Suspense>
   );
 }
 
@@ -48,4 +66,4 @@ export default function App() {
       <AppContent />
     </AuthProvider>
   );
-}
+} 

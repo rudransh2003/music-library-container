@@ -1,5 +1,4 @@
 export function sign(payload) {
-    // payload example: { role: 'admin', name: 'Alice' }
     return btoa(JSON.stringify(payload));
   }
   export function verify(token) {
