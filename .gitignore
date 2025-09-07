@@ -2,4 +2,7 @@ node_modules/
 dist/
 .DS_Store
 package-lock.json
+.envnode_modules/
+dist/
 .env
+.cache/
