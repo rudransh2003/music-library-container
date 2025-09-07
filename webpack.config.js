@@ -2,8 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
-const musicRemoteUrl = "http://localhost:3002/remoteEntry.js";
-console.log('Using remote:', "http://localhost:3002/remoteEntry.js");
+const musicRemoteUrl = process.env.MUSIC_LIBRARY_URL || "http://localhost:3002/remoteEntry.js"
 
 module.exports = {
   entry: path.resolve(__dirname, "src/index.js"),
