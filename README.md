@@ -1,31 +1,25 @@
-# 🎵 Music– Micro Frontend Project
+🎵 Music – Micro Frontend Project
 
-A role-based music library built with **React**, using **micro frontend architecture**.  
-Admins can add songs and albums, while users can like songs and view their liked list.  
-The project is split into a **container** and a **remote**, both deployed separately on Vercel.
+A role-based music library built with React, using micro frontend architecture.
+Admins can add songs and albums, while users can like songs and view their liked list.
+The project is split into a container and a remote, both deployed separately on Vercel.
 
----
+🚀 Running Locally
+1. Clone both repositories
+git clone https://github.com/rudransh2003/music-library-container.git  # container
+git clone https://github.com/rudransh2003/music-library-children.git  # remote
 
-## 🚀 Running Locally
-
-1. **Clone both repositories**
-
-   ```bash
-   git clone https://github.com/rudransh2003/music-library-container.git  //container
-   git clone https://github.com/rudransh2003/music-library-children.git  //children
-
-2. **Install dependencies**
-
+2. Install dependencies
 cd container && npm install
 cd ../remote && npm install
 
-
-3. **Run development servers**
+3. Run development servers
 
 Start the remote first:
 
 cd remote
 npm start
+
 
 Then start the container:
 
@@ -38,43 +32,42 @@ Open your browser at:
 Container → http://localhost:3001
 
 Remote → http://localhost:3002
- (or configured port)
+ (or your configured port)
 
+🌐 Deployment
 
- 🌐 Deployment
+Container → https://music-library-container.vercel.app/
 
-Container : https://music-library-container.vercel.app/
-Remote : https://music-library-children.vercel.app/
+Remote → https://music-library-children.vercel.app/
 
 Container and Remote are deployed separately on Vercel.
-
 Each has its own Vercel project.
-
 The container consumes the remote module via Webpack Module Federation.
 
-Deployment steps:
+Deployment Steps
 
-Push latest changes to main branch (or your chosen branch).
+Push latest changes to main (or your chosen branch).
 
-Deploy the remote first and then proceed with container.
+Deploy the remote first.
 
-Provide the remote's entry url as an env variable in container's vercel deployment.
+Deploy the container, providing the remote's entry URL as an environment variable in the container’s Vercel deployment.
 
 🔑 Demo Credentials
+
 Admin
 
-username: admin
+Username: admin
 
 Password: admin123
 
 User
 
-username: user
+Username: user
 
 Password: user123
 
 🛠 How It Works
-**Micro Frontend Architecture**
+Micro Frontend Architecture
 
 The container hosts the shell app (navigation, layout, auth context).
 
@@ -84,7 +77,7 @@ Both apps are built and deployed independently, but at runtime the container dyn
 
 This allows independent scaling, deployment, and updates.
 
-**Role-Based Authentication**
+Role-Based Authentication
 
 JWT tokens are verified in the container (verifyToken utility).
 
@@ -98,7 +91,7 @@ Can delete items
 
 User role:
 
-Can like songs and view them under liked songs from side nav.
+Can like songs and view them under liked songs in the side nav
 
 The UI adapts based on role:
 
@@ -106,8 +99,7 @@ Admins see “Add Song” / “Create Album” buttons
 
 Users see heart icons for liking songs
 
-
-**Features**
+✨ Features
 
 🎶 Default songs seeded on first run
 
@@ -117,11 +109,11 @@ Users see heart icons for liking songs
 
 📀 Albums with optional uploaded or URL-based covers
 
-🔍 Search across songs, albums, artists and titles
+🔍 Search across songs, albums, artists, and titles
 
 📱 Responsive layout (SideNav, Header, Sections)
 
-⚡ **Tech Stack**
+⚡ Tech Stack
 
 React + Webpack
 
