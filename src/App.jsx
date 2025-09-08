@@ -1,34 +1,22 @@
 import React, { Suspense, useContext, useState, useEffect } from "react";
 import { AuthProvider, AuthContext } from "./AuthContext";
+import { Toaster, toast } from "sonner";
 
 const MusicLibrary = React.lazy(() => import("music_library/MusicLibrary"));
 
-function Header() {
-  const { user, logout } = useContext(AuthContext);
-
-  return (
-    <header className="max-w-5xl mx-auto p-4 flex justify-between items-center">
-      <h1 className="text-2xl font-bold">🎵 MF Music — Container</h1>
-      <div className="space-x-2">
-        {user ? (
-          <>
-            <span className="mr-3">
-              Signed in: <strong>{user.name}</strong> ({user.role})
-            </span>
-            <button className="px-3 py-1 border rounded" onClick={logout}>
-              Logout
-            </button>
-          </>
-        ) : null}
-      </div>
-    </header>
-  );
-}
-
 function AppContent() {
-  const { token, loginAs, logout } = useContext(AuthContext);
+  const { token, loginAs, logout: ctxLogout } = useContext(AuthContext);
   const [formdata, setFormData] = useState({ name: "", password: "" });
   const [error, setError] = useState("");
+
+  const logout = () => {
+    if (window.confirm("Are you sure you want to log out?")) {
+      ctxLogout();
+      toast.success("Logged out");
+    } else {
+      toast.message("Logout cancelled");
+    }
+  };
 
   useEffect(() => {
     if (token) {
@@ -47,38 +35,62 @@ function AppContent() {
 
     if (formdata.name === "user" && formdata.password === "user123") {
       loginAs("user");
+      toast.success("Logged in as user");
     } else if (formdata.name === "admin" && formdata.password === "admin123") {
       loginAs("admin");
+      toast.success("Logged in as admin");
     } else {
       setError("Invalid username or password");
+      toast.error("Invalid username or password");
     }
   };
 
   if (!token) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="p-8 border rounded shadow-lg text-center">
-          <h2 className="text-2xl font-bold mb-4">Login to Music library</h2>
-          <form onSubmit={handleLogin} className="flex flex-col space-y-3">
-            <label>Username</label>
-            <input
-              name="name"
-              value={formdata.name}
-              onChange={handleChange}
-              placeholder="Enter Name"
-            />
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formdata.password}
-              onChange={handleChange}
-              placeholder="Enter Password"
-            />
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+      <div className="min-h-screen bg-[#0f0f0f] text-white flex items-center justify-center px-4">
+        <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-5 sm:p-6 shadow-xl">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-2xl">🎵</span>
+            <h2 className="text-xl sm:text-2xl font-extrabold">Music library</h2>
+          </div>
+
+          <p className="text-sm text-white/60 mb-4">Sign in to continue</p>
+
+          <form onSubmit={handleLogin} className="space-y-3">
+            <label className="block text-xs uppercase tracking-wide text-white/60">
+              Username
+            </label>
+            <div className="rounded-lg bg-white/10 focus-within:bg-white/15 border border-white/10">
+              <input
+                name="name"
+                value={formdata.name}
+                onChange={handleChange}
+                placeholder="Enter name (user / admin)"
+                className="w-full bg-transparent outline-none px-3 py-2 text-sm"
+                autoCapitalize="off"
+                autoCorrect="off"
+              />
+            </div>
+
+            <label className="block text-xs uppercase tracking-wide text-white/60">
+              Password
+            </label>
+            <div className="rounded-lg bg-white/10 focus-within:bg-white/15 border border-white/10">
+              <input
+                type="password"
+                name="password"
+                value={formdata.password}
+                onChange={handleChange}
+                placeholder="Enter password"
+                className="w-full bg-transparent outline-none px-3 py-2 text-sm"
+              />
+            </div>
+
+            {error && <div className="text-red-400 text-xs mt-1">{error}</div>}
+
             <button
               type="submit"
-              className="px-3 py-2 bg-blue-500 text-white rounded"
+              className="w-full mt-2 rounded-full bg-white text-black font-medium py-2 hover:opacity-90 transition"
             >
               Login
             </button>
@@ -89,7 +101,13 @@ function AppContent() {
   }
 
   return (
-    <Suspense fallback={<div>Loading music library...</div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#0f0f0f] text-white flex items-center justify-center">
+          <div className="text-sm text-white/70">Loading music library…</div>
+        </div>
+      }
+    >
       <MusicLibrary token={token} logout={logout} />
     </Suspense>
   );
@@ -98,6 +116,7 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
+      <Toaster position="top-center" closeButton theme="light" duration={2000} />
       <AppContent />
     </AuthProvider>
   );
